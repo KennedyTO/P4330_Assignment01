@@ -111,37 +111,48 @@ Based on the list of Coefficients, the intercept represents the estimated mean v
 
 ##### Age
 
-Based on a = 0.1 the p-value (0.61609) is larger. Therefore, age is not statistically significant. However, the estimate value indicates that for every one-year increase in age, there is an estimated decrease of 0.002716 units in RWA score holding all other variables constant.
+The coeffient of estimated for age on RWA score indicates that for every one-year increase in age, there is an estimated decrease of 0.002278 units in RWA score holding all other variables constant. However, the p-value (0.67090) is larger than the threshold of a = 0.10, implying that age is not statistically significant for predicting RWA scores.
 
 ##### Education: High School
 
-The RWA value for people with high school education is estimated at -0.308570, on average, compared to the females with less than high school education. This value indicates those who have high school education are estimated to have less RWA scores compared to the base population. The corresponding p value is p=0.08952, and based on a = 0.1, the null hypothesis is rejected and high school education is statistically significant for predicting RWA. In this case, a unit-increase indicates the target individuals have high school educations.
+The RWA value for people with high school education is estimated at -0.327150, on average, compared to the females with less than high school education. This value indicates those who have high school education are estimated to have less RWA scores compared to the base population when all other variables are held constant. The corresponding p value is p=0.07036, and based on a = 0.1, the null hypothesis is rejected and high school education is statistically significant for predicting RWA. In this case, a unit-increase indicates the target individuals have high school educations.
 
 ##### Education: College/University
 
-The RWA value for people with college or university education is estimated at -0.458510 compared to the base population, on average. Based on the a = 0.1 threshold, the corresponding p value = 0.03991 is statistically significant. Therefore, the null hypothesis is rejected and supports the alternative hypothesis that having college and/or university education have the statistically significant effect on RWA score.
+The RWA value for people with college or university education is estimated, on average, at -0.480427 compared to the base population when all other variables are controlled for. Based on the a = 0.1 threshold, the corresponding p value = 0.03054 is statistically significant. Therefore, the null hypothesis is rejected and supports the alternative hypothesis that having college and/or university education have the statistically significant effect on RWA score.
 
 ##### Education: Grad/Prof_Dg
 
-Furthermore, the RWA value for people with Graduate or Professional degrees is estimated at -0.642179 compared to the base population. The corresponding low p value of 0.01110 indicates that higher education such as graduate degree or above is a statistically significant predictor for lower RWA score compared to those who have less education background.
+Furthermore, the RWA value for people with Graduate or Professional degrees is estimated at -0.666067, on average, compared to the base population when all other variables are held constant. The corresponding low p value of 0.00783 indicates that higher education such as graduate degree or above is a statistically significant predictor for lower RWA scores compared to those who are female with less than a high school education.
 
 ##### TIPI10
 
-The variable **TIPI10** is also statistically significant (p = 0.00837) in predicting one's RWA score based on a = 0.10. This very small value indicates that for every one-unit increase in TIPI10, the RWA is estimated to go up by 0.096468 on average.
+The variable **TIPI10** is also statistically significant (p = 0.00408) in predicting one's RWA score based on a = 0.10. This very small value indicates that for every one-unit increase in TIPI10, the RWA is estimated to increase by 0.100649 unit, on average when all other variables are held constant.
 
 ##### Gender(Male)
 
-Lastly, male participants have higher RWA score by 0.226626 on average. However, TIPI10 is not statistically significant (p = 0.11741) when a = 0.10. It failed to reject the null hypothesis and the higher unit scores deemed as not statistically significant.
+In the sample, males have an average RWA score that is 0.205109 units higher than females with an education level less than high school. However, this difference is not statistically significant, as indicated by a p-value of 0.15343, which exceeds the threshold, a = 0.10. Consequently, we are unable to reject the null hypothesis, concluding that the higher unit scores for males are not statistically significant.
 
 ------------------------------------------------------------------------
 
-##### 3) Recalculate the standard error for the age effect using Eqs 1:3 from Baraldi & Enders.
+##### 3) Recalculate the standard error for the "*age"* effect using Eqs 1:3 from Baraldi & Enders.
 
-SE = √W+B+B/m
-W = Sum of SE²t / m
-B = Sum(estimated parameter estimate - mean of parameter
+SE = √W+B+B/m, where
+
+-   W = Sum of SE²t / m *\*I don't know [how to get the Sum of SE²t]{.underline}*
+-   B = Sum[Predicted parameter estimate (Estimate of age) - mean of parameter (Mean of age)]² / m-1
+-   SE =
+
+```{r}
+summary(d)
+summary(d_Mul_Imp_10)
+```
 
 ##### 4) Interpret the magnitude of the gender effect (do your best... I know you are not RWA researchers).
+
+In the sample, males have an average RWA score that is 0.205109 units higher than females with an education level less than high school. However, this difference is not statistically significant, as indicated by a p-value of 0.15343, which exceeds the threshold, a = 0.10. Consequently, we are unable to reject the null hypothesis, concluding that the higher unit scores for males are not statistically significant.
+
+------------------------------------------------------------------------
 
 #### Part B
 
