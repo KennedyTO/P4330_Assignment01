@@ -5,6 +5,8 @@ date: "2023-10-21"
 output: html_document
 ---
 
+### Initial Set Up
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
@@ -40,9 +42,9 @@ The dataset for this assignment comes from a study by Dr. Bob Altemeyer from the
 
 ```{r}
 # Load the data
-d <- read.csv ("~/Desktop/P4330/P4330 R code/P4330_Assignment01/rwas_altemeyer.csv") 
-str(d)
-head(d)
+master_d <- read.csv ("~/Desktop/P4330/P4330 R code/P4330_Assignment01/rwas_altemeyer.csv") 
+str(master_d)
+head(master_d)
 ```
 
 ------------------------------------------------------------------------
@@ -58,7 +60,7 @@ Initial Data Processing
 ```{r}
 
 # Change education to factor and assign each level a name
-d <- d %>%
+d <- master_d %>%
   mutate(education = factor(education,
                             levels = c(1, 2, 3, 4),
                             labels = c(": Less than high school", ": High school", 
@@ -158,7 +160,21 @@ In the sample, males have an average RWA score that is 0.205109 units higher tha
 
 For this part we are interested in whether education mediates the relationship between age and rwas. We are going to treat education as a continuous variable, and use stochastic regression imputation. Use bootstrapping for the analysis (1000 samples).
 
+```{r}
+# Set seed so Knitting won't change the values.
+set.seed(123)
+
+# Run Stochastic regression imputation (Multiple Imputatoin) x 1000
+d_Sto_Imp <- mice(master_d, method = "norm.nob", m = 1000, printFlag = FALSE)
+m_Sto_Imp <- complete(d_Sto_Imp)
+```
+
 ##### 1) Summarize the null hypothesis testing results for the indirect effect, using a = .01. You can use the p-value for this analysis.
+
+```{r}
+summary(master_d)
+summary(m_Sto_Imp)
+```
 
 ##### 2) Interpret the coefficient for the indirect effect.
 
