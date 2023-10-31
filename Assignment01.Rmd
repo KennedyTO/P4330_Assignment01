@@ -5,19 +5,19 @@ date: "2023-10-21"
 output: html_document
 ---
 
-### Initial Set Up
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
 
-# List of required functions
-library(flexplot) 
+List of functions
+
+```{r}
+library(flexplot) # Visualization for mediation linear model
 library(MBESS) 
 library(mice) 
 library(tidyverse) 
 library(GGally) 
 library(mediation)
-library(psych)
 ```
 
 ### Outline:
@@ -49,7 +49,7 @@ head(master_d)
 
 ------------------------------------------------------------------------
 
-#### Part A
+### Part A
 
 For this question we are interested in predicting rwas from age, education, TIPI10, and gender. *We are going to treat education as a factor in this question (with "high school" education as the reference category).*
 
@@ -101,11 +101,7 @@ summary(Mul_Imp_m)
 confint(Mul_Imp_m)
 ```
 
-#### Interpretation (I did not set the seed before beginning to write this report)
-
-*Please note that the summary's interpretation is contingent on the imputed results available at the time this report was written. Discrepancies between the summary and this interpretation may arise from subsequent imputation or reruns of the code, conducted for functional checks or corrections in both sections A and B of the assignment.*
-
-*Thus, the summary serves primarily as an indicator of due diligence in completing the assignment, rather than as a definitive reflection of the exact values shown in the summary section and values discussed in this interpretation.*
+#### Interpretation
 
 ##### **Intercept**:
 
@@ -139,24 +135,69 @@ In the sample, males have an average RWA score that is 0.205109 units higher tha
 
 ##### 3) Recalculate the standard error for the "*age"* effect using Eqs 1:3 from Baraldi & Enders.
 
-SE = √W+B+B/m, where
+From the article pp.17-18 by Baraldi & Enders
 
--   W = Sum of SE²t / m *\*I don't know [how to get the Sum of SE²t]{.underline}*
+To calculate the SE = √W+B+B/m, where:
+
+-   W = Sum of SE²t / m
 -   B = Sum[Predicted parameter estimate (Estimate of age) - mean of parameter (Mean of age)]² / m-1
--   SE =
 
 ```{r}
-summary(d)
-summary(d_Mul_Imp_10)
+# Aquire each imputed data set and get SE for 10 different imputation
+Mul_Imp_10 <- mice(d, method = "norm.nob", m = 10)
+
+# Create empty vectors to store the standard error and estimates
+pooled_se <- vector("numeric", length = 10) 
+pooled_estimate <- vector("numeric", length = 10)
+
+# Loop through the 10 imputed datasets 
+for (i in 1:10) {
+  # Complete the imputed dataset
+  dati <- complete(Mul_Imp_10, action = i)
+  
+  # Run the linear model and summary
+  dati_lm <- lm(rwas ~ age + education + TIPI10 + gender, data = dati)
+  dati_summary <- summary(dati_lm)
+  
+  # Extract standard error and estimate for 'age' 
+  pooled_se[i] <- dati_summary$coefficients[,'Std. Error']['age']
+  pooled_estimate[i] <- dati_summary$coefficients[,'Estimate']['age']
+}
+
+# Solve for W -> W = Sum of SE²t / m
+W <- sum(pooled_se)/10
+
+# Solve for Theta-hat
+MeanTheta <- mean(pooled_estimate)
+
+pooled_estimate
+
+# Enter each predicted theta value into the following equation and solve for B
+B <- (-0.0019344952 - MeanTheta)^2 + 
+  (-0.0002838454 - MeanTheta)^2 + 
+  (-0.0045891127 - MeanTheta)^2 + 
+  (-0.0035153700 - MeanTheta)^2 + 
+  (-0.0037567881 - MeanTheta)^2 + 
+  (-0.0038797397 - MeanTheta)^2 + 
+  (-0.0011823281 - MeanTheta)^2 + 
+  (-0.0014276767 - MeanTheta)^2 + 
+  (-0.0058293328 - MeanTheta)^2 + 
+  (-0.0034012693 - MeanTheta)^2/(10-1)
+
+# Obtain the Pooled Standard Error
+P_SE <- sqrt(W + B + (B/10))
+
+print(P_SE)
+
 ```
 
-##### 4) Interpret the magnitude of the gender effect (do your best... I know you are not RWA researchers).
+##### 4) Interpret the magnitude of the gender effect (do your best... I now you are not RWA researchers).
 
 In the sample, males have an average RWA score that is 0.205109 units higher than females with an education level less than high school. However, this difference is not statistically significant, as indicated by a p-value of 0.15343, which exceeds the threshold, a = 0.10. Consequently, we are unable to reject the null hypothesis, concluding that the higher unit scores for males are not statistically significant.
 
 ------------------------------------------------------------------------
 
-#### Part B
+### Part B
 
 For this part we are interested in whether education mediates the relationship between age and rwas. We are going to treat education as a continuous variable, and use stochastic regression imputation. Use bootstrapping for the analysis (1000 samples).
 
@@ -165,16 +206,34 @@ For this part we are interested in whether education mediates the relationship b
 set.seed(123)
 
 # Run Stochastic regression imputation (Multiple Imputatoin) x 1000
-d_Sto_Imp <- mice(master_d, method = "norm.nob", m = 1000, printFlag = FALSE)
-m_Sto_Imp <- complete(d_Sto_Imp)
+d_Sto_Imp <- mice(master_d, method = "norm.nob", m = 1, printFlag = FALSE)
+Sto_Imp1 <- complete(d_Sto_Imp)
+
+# Look at basic stats
+summary(Sto_Imp1)
+summary(master_d)
+
+# Run a mediation model and see if education mediates the age and rwas
+med_model <- lm(education ~ age, data = Sto_Imp1)
+tot_model <- lm(rwas ~ age + education, data = Sto_Imp1)
+
+# mediate
+library(mediation)
+
+res <- mediate(model.m = med_model, 
+               model.y = tot_model, 
+               treat = 'age', 
+               mediator = 'education', 
+               boot = TRUE, 
+               sims = 1000)
+
+?mediate
+
+#summary(res)
+
 ```
 
 ##### 1) Summarize the null hypothesis testing results for the indirect effect, using a = .01. You can use the p-value for this analysis.
-
-```{r}
-summary(master_d)
-summary(m_Sto_Imp)
-```
 
 ##### 2) Interpret the coefficient for the indirect effect.
 
