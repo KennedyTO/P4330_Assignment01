@@ -2,7 +2,9 @@
 title: "P4330_Assignment01"
 author: "Ken Suzuki"
 date: "2023-10-21"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -79,18 +81,14 @@ md.pattern(d)
 set.seed(123)
 
 #Impute data using Multiple Imputation 
-Mul_Imp_10 <- mice(d, method = "norm.nob", m = 10)
+Mul_Imp_10 <- mice(d, method = "norm.nob", m = 10, printFlag = FALSE)
 d_Mul_Imp_10 <- complete(Mul_Imp_10)
 
-# Confirm the imputation
-md.pattern(d_Mul_Imp_10)
+# Confirm the imputation and ensure no NAs.
+summary(d_Mul_Imp_10)
 ```
 
 #### Question 1 and 2
-
-1.  Summarize the null hypothesis testing results, using a = .10.
-
-2.  Interpret each unstandardized effect.
 
 ```{r}
 names(d)
@@ -144,7 +142,7 @@ To calculate the SE = √W+B+B/m, where:
 
 ```{r}
 # Aquire each imputed data set and get SE for 10 different imputation
-Mul_Imp_10 <- mice(d, method = "norm.nob", m = 10)
+Mul_Imp_10 <- mice(d, method = "norm.nob", m = 10, printFlag = FALSE)
 
 # Create empty vectors to store the standard error and estimates
 pooled_se <- vector("numeric", length = 10) 
@@ -201,6 +199,9 @@ In the sample, males have an average RWA score that is 0.205109 units higher tha
 
 For this part we are interested in whether education mediates the relationship between age and rwas. We are going to treat education as a continuous variable, and use stochastic regression imputation. Use bootstrapping for the analysis (1000 samples).
 
+```         
+```
+
 ```{r}
 # Set seed so Knitting won't change the values.
 set.seed(123)
@@ -227,14 +228,39 @@ res <- mediate(model.m = med_model,
                boot = TRUE, 
                sims = 1000)
 
-?mediate
+summary(res)
+```
 
-#summary(res)
+```{r}
+# Check the overall relationship 
+Sto_Imp1 %>% 
+  dplyr::select(age, education, rwas) %>%
+  GGally::ggpairs()
 
 ```
 
 ##### 1) Summarize the null hypothesis testing results for the indirect effect, using a = .01. You can use the p-value for this analysis.
 
+P value for the Average Causal Mediation Effect (Indirect effect) is 0.006, which is statistically significant given that a = .01. Therefore, the null hypothesis -- indirect effect is equal to zero -- is rejected, and the alternative hypothsis -education mediates the relationship between age and rwas- is supported.
+
 ##### 2) Interpret the coefficient for the indirect effect.
 
+The coefficient estimate of -0.00605 for the indirect effect indicates that, when mediated by Education, a one-year increase in age results in a reduction of the RWA score by 0.00605 units.
+
 ##### 3) Use effect size measures to discuss the magnitude of the indirect effect.
+
+```{r}
+# I have tried bootstrapping x1000 but it echoed an error. I will reduce it by 50 times which was provided in the examples in the lecture.  
+
+upsilon(x = Sto_Imp1 $age,
+        mediator = Sto_Imp1$education,
+        dv = Sto_Imp1$rwas, B = 50)
+```
+
+The estimated completely standardized indirect effect under Upsilon is 0.02276190. This value suggests that for every standard deviation increase in age results in an increase of 0.02276190 standard deviation unit in the RWA, mediated by the effect of Education.
+
+Adjusted Upsilon considers influences from confounded variables. Therefore, the estimate is lower than non-adjusted Upsilon. For
+
+Because the confidence intervals do not include zero between the Lower Confidence Limit and the Upper Confidence Limit, the mediation effect is statistically significant.\
+
+In conclusion, people's age has an indirect effect on RWA scores through its effect on Education.
