@@ -1,0 +1,38 @@
+---
+title: "Assignment02"
+author: "Ken Suzuki"
+date: "2023-11-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+For this assignment, you will be using the sat.act dataset available within the psych package in R.
+
+### Variables
+```
+1) Gender: 1 = males; 2 = females
+2) Education: 0 = less than high school; 1 = high school; 2 = post-secondary diploma program; 3 = some university/college; 4 = completed university/college; 5 = graduate work.
+3) Age = age in years
+4) ACT = American College Test (ranges from 0 to 36)
+5) SATQ = Standard Aptitude Test – Quantitative (ranges from 200-800)
+6) SATV = Standard Aptitude Test – Verbal (ranges from 200-800)
+```
+For the questions below, use α = .10 for any null hypothesis significance tests.
+
+### Part A (12 marks)
+Explore how the interaction between gender and age affects scores on the SATQ. More specifically,summarize the findings related to this effect, including the following:
+
+1) Set-up the variables/model and print the results (3 marks)
+2) Summarize the traditional null hypothesis significance testing results (1 mark)
+3) Plot the interaction, with a summary of visualization (2 marks)
+4) Conduct a negligible effect test on the interaction (using a negligible effect interval of b = -2 to b = 2), and summarize the results (3 marks)
+```
+Note that specifying the formula with the following formats will not work in neg.reg: y ~x1*x2 or y ~ x1 + x2 + x1:x2. There are two ways around this: a) compute the interaction term before running the model (e.g., int = x1*x2, using a numeric version of gender), and then use neg.reg (formula = y ~ x1 + x2 + int), or b) compute the confidence intervalfor the interaction separately using confint(model).
+```
+
+5) Provide an interpretation of the magnitude of the interaction using both standardized and
+unstandardized units, as well as an interpretation of magnitude using the proportional
+distance (specific to the negligible effect test). (3 marks)

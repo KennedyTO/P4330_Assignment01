@@ -107,15 +107,15 @@ Based on the list of Coefficients, the intercept represents the estimated mean v
 
 ##### Age
 
-The coeffient of estimated for age on RWA score indicates that for every one-year increase in age, there is an estimated decrease of 0.002278 units in RWA score holding all other variables constant. However, the p-value (0.67090) is larger than the threshold of a = 0.10, implying that age is not statistically significant for predicting RWA scores.
+The coeffient of estimate for the age variable on RWA score indicates that for every one-year increase in age, there is an estimated decrease of 0.002278 units in RWA score holding all other variables constant. However, the p-value (0.67090) is larger than the threshold of a = 0.10, implying that age is not statistically significant for predicting RWA scores.
 
 ##### Education: High School
 
-The RWA value for people with high school education is estimated at -0.327150, on average, compared to the females with less than high school education. This value indicates those who have high school education are estimated to have less RWA scores compared to the base population when all other variables are held constant. The corresponding p value is p=0.07036, and based on a = 0.1, the null hypothesis is rejected and high school education is statistically significant for predicting RWA. In this case, a unit-increase indicates the target individuals have high school educations.
+The RWA value for people with high school education is estimated at -0.327150, on average, compared to the females with less than high school education. This value indicates those who have high school education are estimated to have less RWA scores compared to the base population when all other variables are held constant. The corresponding p value is 0.07036, and based on a = 0.1, the null hypothesis is rejected and high school education is statistically significant for predicting RWA scores. In this case, a unit-increase indicates the target individuals have high school educations.
 
 ##### Education: College/University
 
-The RWA value for people with college or university education is estimated, on average, at -0.480427 compared to the base population when all other variables are controlled for. Based on the a = 0.1 threshold, the corresponding p value = 0.03054 is statistically significant. Therefore, the null hypothesis is rejected and supports the alternative hypothesis that having college and/or university education have the statistically significant effect on RWA score.
+The RWA value for people with college or university education is estimated, on average, at -0.480427 compared to the base population when all other variables are controlled for. Based on the a = 0.1 threshold, the corresponding p value, 0.03054, is statistically significant. Therefore, the null hypothesis is rejected and supports the alternative hypothesis that having college and/or university education have the statistically significant effect on RWA scores
 
 ##### Education: Grad/Prof_Dg
 
@@ -123,7 +123,7 @@ Furthermore, the RWA value for people with Graduate or Professional degrees is e
 
 ##### TIPI10
 
-The variable **TIPI10** is also statistically significant (p = 0.00408) in predicting one's RWA score based on a = 0.10. This very small value indicates that for every one-unit increase in TIPI10, the RWA is estimated to increase by 0.100649 unit, on average when all other variables are held constant.
+The variable TIPI10 is also statistically significant (p = 0.00408) in predicting one's RWA score based on a = 0.10. This very small value indicates that for every one-unit increase in TIPI10, the RWA is estimated to increase by 0.100649 unit, on average when all other variables are held constant.
 
 ##### Gender(Male)
 
@@ -168,7 +168,8 @@ W <- sum(pooled_se)/10
 # Solve for Theta-hat
 MeanTheta <- mean(pooled_estimate)
 
-pooled_estimate
+#Print pooled estimates
+print(pooled_estimate)
 
 # Enter each predicted theta value into the following equation and solve for B
 B <- (-0.0019344952 - MeanTheta)^2 + 
@@ -250,17 +251,19 @@ The coefficient estimate of -0.00605 for the indirect effect indicates that, whe
 ##### 3) Use effect size measures to discuss the magnitude of the indirect effect.
 
 ```{r}
-# I have tried bootstrapping x1000 but it echoed an error. I will reduce it by 50 times which was provided in the examples in the lecture.  
+# I have tried bootstrapping 1000 times, but it echoed an error. "Warning: cannot open compressed file '/Users/kensuzuki/Desktop/P4330/P4330 R code/P4330_Assignment01/.Rproj.user/shared/notebooks/488BA7B6-Assignment01/1/9F23A4C0946a7feb/cr9o86wdvsdyy_t/_rs_rdf_688b2b79da9a.rdf', probable reason 'No such file or directory'Error in gzfile(file, "wb") : cannot open the connection"
+
+#I reduced it by 50 times, which was the value given in one of the examples in the lecture.  
 
 upsilon(x = Sto_Imp1 $age,
         mediator = Sto_Imp1$education,
         dv = Sto_Imp1$rwas, B = 50)
 ```
 
-The estimated completely standardized indirect effect under Upsilon is 0.02276190. This value suggests that for every standard deviation increase in age results in an increase of 0.02276190 standard deviation unit in the RWA, mediated by the effect of Education.
+The estimated Completely Standardized indirect effect under Upsilon is 0.02276190. This value suggests that for every standard deviation increase in age results in an increase of 0.02276190 standard deviation unit in the RWA, mediated by the effect of Education.
 
-Adjusted Upsilon considers influences from confounded variables. Therefore, the estimate is lower than non-adjusted Upsilon. For
+Taking into consideration of the confounded variables, the adjusted Upsilon estimate is lower than non-adjusted Upsilon.
 
-Because the confidence intervals do not include zero between the Lower Confidence Limit and the Upper Confidence Limit, the mediation effect is statistically significant.\
+Because the confidence intervals on both cases do not include zeros between the Lower Confidence Limit and the Upper Confidence Limits, the mediation effect is considered statistically significant.
 
 In conclusion, people's age has an indirect effect on RWA scores through its effect on Education.
