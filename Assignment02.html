@@ -385,8 +385,8 @@ head(d)</code></pre>
 4) ACT = American College Test (ranges from 0 to 36)
 5) SATQ = Standard Aptitude Test – Quantitative (ranges from 200-800)
 6) SATV = Standard Aptitude Test – Verbal (ranges from 200-800)</code></pre>
-<p>For the questions below, use α = .10 for any null hypothesis
-significance tests.</p>
+<p><strong>For the questions below, use α = .10 for any null hypothesis
+significance tests.</strong></p>
 </div>
 <div id="part-a-12-marks" class="section level3">
 <h3>Part A (12 marks)</h3>
@@ -396,7 +396,8 @@ effect, including the following:</p>
 <ol style="list-style-type: decimal">
 <li>Set-up the variables/model and print the results (3 marks)</li>
 </ol>
-<pre class="r"><code>model01 &lt;- lm(SATQ ~ gender * age, data = d)
+<pre class="r"><code># Set up the linear model in the interaction term between gender and age
+model01 &lt;- lm(SATQ ~ gender * age, data = d)
 confint(model01, level = 0.90)</code></pre>
 <pre><code>##                     5 %          95 %
 ## (Intercept) 549.4006790 695.346999457
@@ -428,12 +429,40 @@ confint(model01, level = 0.90)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Summarize the traditional null hypothesis significance testing
 results (1 mark)</li>
+</ol>
+<p><strong>Gender</strong><br />
+The coefficient estimate of gender is 0.1320, indicating a potential
+increase of 0.1320 units in the SATQ score when gender changes from male
+to female, holding all other variables constant. However, this finding
+is not statistically significant as the p-value, 0.9960, exceeds the a =
+0.10. This notion is also evident as the Confidence Interval ranges from
+-42.7283407 to 42.992317966 that includes zero within its range.</p>
+<p><strong>Age</strong><br />
+The coefficient estimate of age is 2.0769, indicating that one-unit
+increase in the age is potentially associated with an increase by 2.0769
+points in SATQ when other variables are controlled for. However, p-value
+exceeds the alpha level of 0.1 and this association is not statistically
+significant. Confidence interval ranges between -0.5654472 and
+4.719193133, which zero is included in the range, implying that the
+effect may not significant.</p>
+<p><strong>Interaction Term between Gender and Age</strong><br />
+The coefficient estimate of the interaction term of age and gender is
+-1.5611, indicating that one unit increase in age has a potential
+association of decrease in SATQ score between male and female by 1.5611.
+The corresponding p-value 0.0996 is statistically significant when alpha
+= .10.</p>
+<ol start="3" style="list-style-type: decimal">
 <li>Plot the interaction, with a summary of visualization (2 marks)</li>
 <li>Conduct a negligible effect test on the interaction (using a
 negligible effect interval of b = -2 to b = 2), and summarize the
 results (3 marks)</li>
 </ol>
-<pre><code>Note that specifying the formula with the following formats will not work in neg.reg: y ~x1*x2 or y ~ x1 + x2 + x1:x2. There are two ways around this: a) compute the interaction term before running the model (e.g., int = x1*x2, using a numeric version of gender), and then use neg.reg (formula = y ~ x1 + x2 + int), or b) compute the confidence intervalfor the interaction separately using confint(model).</code></pre>
+<p>Note that specifying the formula with the following formats will not
+work in neg.reg: y ~x1<em>x2 or y ~ x1 + x2 + x1:x2. There are two ways
+around this: a) compute the interaction term before running the model
+(e.g., int = x1</em>x2, using a numeric version of gender), and then use
+neg.reg (formula = y ~ x1 + x2 + int), or b) compute the confidence
+intervalfor the interaction separately using confint(model). ```</p>
 <ol start="5" style="list-style-type: decimal">
 <li>Provide an interpretation of the magnitude of the interaction using
 both standardized and unstandardized units, as well as an interpretation

@@ -28,23 +28,32 @@ str(d)
 5) SATQ = Standard Aptitude Test – Quantitative (ranges from 200-800)
 6) SATV = Standard Aptitude Test – Verbal (ranges from 200-800)
 ```
-For the questions below, use α = .10 for any null hypothesis significance tests.
+**For the questions below, use α = .10 for any null hypothesis significance tests.**
 
 ### Part A (12 marks)
 Explore how the interaction between gender and age affects scores on the SATQ. More specifically,summarize the findings related to this effect, including the following:
 
 1) Set-up the variables/model and print the results (3 marks)
 ```{r}
+# Set up the linear model in the interaction term between gender and age
 model01 <- lm(SATQ ~ gender * age, data = d)
 confint(model01, level = 0.90)
 summary(model01)
 ```
-
-
 2) Summarize the traditional null hypothesis significance testing results (1 mark)
+
+**Gender**  
+The coefficient estimate of gender is 0.1320, indicating a potential increase of 0.1320 units in the SATQ score when gender changes from male to female, holding all other variables constant. However, this finding is not statistically significant as the p-value, 0.9960, exceeds the a = 0.10. This notion is also evident as the Confidence Interval ranges from -42.7283407 to 42.992317966 that includes zero within its range. 
+
+**Age**  
+The coefficient estimate of age is 2.0769, indicating that one-unit increase in the age is potentially associated with an increase by 2.0769 points in SATQ when other variables are controlled for. However, p-value exceeds the alpha level of 0.1 and this association is not statistically significant. Confidence interval ranges between -0.5654472 and 4.719193133, which zero is included in the range, implying that the effect may not significant.
+
+**Interaction Term between Gender and Age**  
+The coefficient estimate of the interaction term of age and gender is -1.5611, indicating that one year increase in age has a potential decrease in SATQ score between male and female by 1.5611. The corresponding p-value 0.0996 is statistically significant when alpha = .10.  
+
 3) Plot the interaction, with a summary of visualization (2 marks)
 4) Conduct a negligible effect test on the interaction (using a negligible effect interval of b = -2 to b = 2), and summarize the results (3 marks)
-```
+
 Note that specifying the formula with the following formats will not work in neg.reg: y ~x1*x2 or y ~ x1 + x2 + x1:x2. There are two ways around this: a) compute the interaction term before running the model (e.g., int = x1*x2, using a numeric version of gender), and then use neg.reg (formula = y ~ x1 + x2 + int), or b) compute the confidence intervalfor the interaction separately using confint(model).
 ```
 
