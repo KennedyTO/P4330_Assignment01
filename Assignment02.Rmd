@@ -2,7 +2,9 @@
 title: "Assignment02"
 author: "Ken Suzuki"
 date: "2023-11-21"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -10,6 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 For this assignment, you will be using the sat.act dataset available within the psych package in R.
+```{r}
+library(psych)
+d <- sat.act 
+head(d)
+str(d)
+```
 
 ### Variables
 ```
@@ -26,6 +34,13 @@ For the questions below, use α = .10 for any null hypothesis significance tests
 Explore how the interaction between gender and age affects scores on the SATQ. More specifically,summarize the findings related to this effect, including the following:
 
 1) Set-up the variables/model and print the results (3 marks)
+```{r}
+model01 <- lm(SATQ ~ gender * age, data = d)
+confint(model01, level = 0.90)
+summary(model01)
+```
+
+
 2) Summarize the traditional null hypothesis significance testing results (1 mark)
 3) Plot the interaction, with a summary of visualization (2 marks)
 4) Conduct a negligible effect test on the interaction (using a negligible effect interval of b = -2 to b = 2), and summarize the results (3 marks)

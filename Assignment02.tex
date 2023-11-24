@@ -1,0 +1,257 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Assignment02},
+  pdfauthor={Ken Suzuki},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Assignment02}
+\author{Ken Suzuki}
+\date{2023-11-21}
+
+\begin{document}
+\maketitle
+
+For this assignment, you will be using the sat.act dataset available
+within the psych package in R.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(psych)}
+\NormalTok{d }\OtherTok{\textless{}{-}}\NormalTok{ sat.act }
+\FunctionTok{head}\NormalTok{(d)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       gender education age ACT SATV SATQ
+## 29442      2         3  19  24  500  500
+## 29457      2         3  23  35  600  500
+## 29498      2         3  20  21  480  470
+## 29503      1         4  27  26  550  520
+## 29504      1         2  33  31  600  550
+## 29518      1         5  26  28  640  640
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(d)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    700 obs. of  6 variables:
+##  $ gender   : int  2 2 2 1 1 1 2 1 2 2 ...
+##  $ education: int  3 3 3 4 2 5 5 3 4 5 ...
+##  $ age      : int  19 23 20 27 33 26 30 19 23 40 ...
+##  $ ACT      : int  24 35 21 26 31 28 36 22 22 35 ...
+##  $ SATV     : int  500 600 480 550 600 640 610 520 400 730 ...
+##  $ SATQ     : int  500 500 470 520 550 640 500 560 600 800 ...
+\end{verbatim}
+
+\hypertarget{variables}{%
+\subsubsection{Variables}\label{variables}}
+
+\begin{verbatim}
+1) Gender: 1 = males; 2 = females
+2) Education: 0 = less than high school; 1 = high school; 2 = post-secondary diploma program; 3 = some university/college; 4 = completed university/college; 5 = graduate work.
+3) Age = age in years
+4) ACT = American College Test (ranges from 0 to 36)
+5) SATQ = Standard Aptitude Test – Quantitative (ranges from 200-800)
+6) SATV = Standard Aptitude Test – Verbal (ranges from 200-800)
+\end{verbatim}
+
+For the questions below, use α = .10 for any null hypothesis
+significance tests.
+
+\hypertarget{part-a-12-marks}{%
+\subsubsection{Part A (12 marks)}\label{part-a-12-marks}}
+
+Explore how the interaction between gender and age affects scores on the
+SATQ. More specifically,summarize the findings related to this effect,
+including the following:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  Set-up the variables/model and print the results (3 marks)
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model01 }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(SATQ }\SpecialCharTok{\textasciitilde{}}\NormalTok{ gender }\SpecialCharTok{*}\NormalTok{ age, }\AttributeTok{data =}\NormalTok{ d)}
+\FunctionTok{confint}\NormalTok{(model01, }\AttributeTok{level =} \FloatTok{0.90}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     5 %          95 %
+## (Intercept) 549.4006790 695.346999457
+## gender      -42.7283407  42.992317966
+## age          -0.5654472   4.719193133
+## gender:age   -3.1205903  -0.001636873
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(model01)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = SATQ ~ gender * age, data = d)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -398.59  -81.31   14.99   86.66  232.17 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 622.3738    44.3044  14.048   <2e-16 ***
+## gender        0.1320    26.0219   0.005   0.9960    
+## age           2.0769     1.6042   1.295   0.1959    
+## gender:age   -1.5611     0.9468  -1.649   0.0996 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 114 on 683 degrees of freedom
+##   (13 observations deleted due to missingness)
+## Multiple R-squared:  0.03259,    Adjusted R-squared:  0.02834 
+## F-statistic: 7.669 on 3 and 683 DF,  p-value: 4.791e-05
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Summarize the traditional null hypothesis significance testing results
+  (1 mark)
+\item
+  Plot the interaction, with a summary of visualization (2 marks)
+\item
+  Conduct a negligible effect test on the interaction (using a
+  negligible effect interval of b = -2 to b = 2), and summarize the
+  results (3 marks)
+\end{enumerate}
+
+\begin{verbatim}
+Note that specifying the formula with the following formats will not work in neg.reg: y ~x1*x2 or y ~ x1 + x2 + x1:x2. There are two ways around this: a) compute the interaction term before running the model (e.g., int = x1*x2, using a numeric version of gender), and then use neg.reg (formula = y ~ x1 + x2 + int), or b) compute the confidence intervalfor the interaction separately using confint(model).
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Provide an interpretation of the magnitude of the interaction using
+  both standardized and unstandardized units, as well as an
+  interpretation of magnitude using the proportional distance (specific
+  to the negligible effect test). (3 marks)
+\end{enumerate}
+
+\end{document}

@@ -359,6 +359,24 @@ display: none;
 
 <p>For this assignment, you will be using the sat.act dataset available
 within the psych package in R.</p>
+<pre class="r"><code>library(psych)
+d &lt;- sat.act 
+head(d)</code></pre>
+<pre><code>##       gender education age ACT SATV SATQ
+## 29442      2         3  19  24  500  500
+## 29457      2         3  23  35  600  500
+## 29498      2         3  20  21  480  470
+## 29503      1         4  27  26  550  520
+## 29504      1         2  33  31  600  550
+## 29518      1         5  26  28  640  640</code></pre>
+<pre class="r"><code>str(d)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    700 obs. of  6 variables:
+##  $ gender   : int  2 2 2 1 1 1 2 1 2 2 ...
+##  $ education: int  3 3 3 4 2 5 5 3 4 5 ...
+##  $ age      : int  19 23 20 27 33 26 30 19 23 40 ...
+##  $ ACT      : int  24 35 21 26 31 28 36 22 22 35 ...
+##  $ SATV     : int  500 600 480 550 600 640 610 520 400 730 ...
+##  $ SATQ     : int  500 500 470 520 550 640 500 560 600 800 ...</code></pre>
 <div id="variables" class="section level3">
 <h3>Variables</h3>
 <pre><code>1) Gender: 1 = males; 2 = females
@@ -377,6 +395,37 @@ the SATQ. More specifically,summarize the findings related to this
 effect, including the following:</p>
 <ol style="list-style-type: decimal">
 <li>Set-up the variables/model and print the results (3 marks)</li>
+</ol>
+<pre class="r"><code>model01 &lt;- lm(SATQ ~ gender * age, data = d)
+confint(model01, level = 0.90)</code></pre>
+<pre><code>##                     5 %          95 %
+## (Intercept) 549.4006790 695.346999457
+## gender      -42.7283407  42.992317966
+## age          -0.5654472   4.719193133
+## gender:age   -3.1205903  -0.001636873</code></pre>
+<pre class="r"><code>summary(model01)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = SATQ ~ gender * age, data = d)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -398.59  -81.31   14.99   86.66  232.17 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 622.3738    44.3044  14.048   &lt;2e-16 ***
+## gender        0.1320    26.0219   0.005   0.9960    
+## age           2.0769     1.6042   1.295   0.1959    
+## gender:age   -1.5611     0.9468  -1.649   0.0996 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 114 on 683 degrees of freedom
+##   (13 observations deleted due to missingness)
+## Multiple R-squared:  0.03259,    Adjusted R-squared:  0.02834 
+## F-statistic: 7.669 on 3 and 683 DF,  p-value: 4.791e-05</code></pre>
+<ol start="2" style="list-style-type: decimal">
 <li>Summarize the traditional null hypothesis significance testing
 results (1 mark)</li>
 <li>Plot the interaction, with a summary of visualization (2 marks)</li>
