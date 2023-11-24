@@ -14,9 +14,32 @@ knitr::opts_chunk$set(echo = TRUE)
 For this assignment, you will be using the sat.act dataset available within the psych package in R.
 ```{r}
 library(psych)
+library(tidyverse)
+library(mice)
 d <- sat.act 
 head(d)
 str(d)
+
+# Data Preparation
+d$ACT <- as.numeric(d$ACT)
+d$SATV <- as.numeric(d$SATV)
+d$SATQ <- as.numeric(d$SATQ)
+
+d_gender <- d %>%
+  mutate(gender = case_when(
+    gender == 1 ~ "male",
+    gender == 2 ~ "female"
+  ))
+
+# Find if there are any NAs in the data.
+any(is.na(d_gender))
+
+# Imputation (used norm.predict)
+?mice
+imp_d <- mice(d_gender, m = 10, method = "norm.nob", seed = 123)
+d02 <- complete(imp_d)
+
+any(is.na(d02))
 ```
 
 ### Variables
@@ -36,26 +59,56 @@ Explore how the interaction between gender and age affects scores on the SATQ. M
 1) Set-up the variables/model and print the results (3 marks)
 ```{r}
 # Set up the linear model in the interaction term between gender and age
-model01 <- lm(SATQ ~ gender * age, data = d)
+model01 <- lm(SATQ ~ gender * age, data = d02)
 confint(model01, level = 0.90)
 summary(model01)
 ```
 2) Summarize the traditional null hypothesis significance testing results (1 mark)
 
 **Gender**  
-The coefficient estimate of gender is 0.1320, indicating a potential increase of 0.1320 units in the SATQ score when gender changes from male to female, holding all other variables constant. However, this finding is not statistically significant as the p-value, 0.9960, exceeds the a = 0.10. This notion is also evident as the Confidence Interval ranges from -42.7283407 to 42.992317966 that includes zero within its range. 
+The coefficient estimate of gender is -2.8073, indicating a potential decrease of 2.8073 points in the SATQ score when gender changes from male to female, holding all other variables constant. However, this finding is not statistically significant as the p-value, 0.9136, exceeds the a = 0.10 threshold. This notion is also supported by the Confidence Interval, which includes zero in its ranges of -45.42246401 to 39.80795978. 
 
 **Age**  
-The coefficient estimate of age is 2.0769, indicating that one-unit increase in the age is potentially associated with an increase by 2.0769 points in SATQ when other variables are controlled for. However, p-value exceeds the alpha level of 0.1 and this association is not statistically significant. Confidence interval ranges between -0.5654472 and 4.719193133, which zero is included in the range, implying that the effect may not significant.
+The coefficient estimate of age is -0.9927, indicating that for one-year increase in the age is potentially associated with an decrease by 0.9927 points in SATQ when all other variables are controlled for. The corresponding p-value is 0.0840 and less than the alpha level threshold of 0.1. Therefore, this estimate is statistically significant. Confidence interval ranges between -1.93767763 and -0.04772478, also suggesting that the effect might be statistically significant.
 
 **Interaction Term between Gender and Age**  
-The coefficient estimate of the interaction term of age and gender is -1.5611, indicating that one year increase in age has a potential decrease in SATQ score between male and female by 1.5611. The corresponding p-value 0.0996 is statistically significant when alpha = .10.  
+The coefficient of 1.5978 for the interaction term suggests that the impact of age on SATQ scores is different for males compared to females. More specifically, for each additional year, the SATQ score for males is expected to increase by 1.5978 points more than it would for females, holding all other predictors constant.The corresponding p-value 0.0996 is statistically significant when alpha = .10. The confidence interval ranges from 0.04478906   3.15086977, which also suggests that there is an interaction.
 
 3) Plot the interaction, with a summary of visualization (2 marks)
-4) Conduct a negligible effect test on the interaction (using a negligible effect interval of b = -2 to b = 2), and summarize the results (3 marks)
-
-Note that specifying the formula with the following formats will not work in neg.reg: y ~x1*x2 or y ~ x1 + x2 + x1:x2. There are two ways around this: a) compute the interaction term before running the model (e.g., int = x1*x2, using a numeric version of gender), and then use neg.reg (formula = y ~ x1 + x2 + int), or b) compute the confidence intervalfor the interaction separately using confint(model).
+```{r}
+library(ggplot2)
+ggplot(data = d02, aes(x = age, y = SATQ, colour = gender)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "SATQ Score by Age and Gender",
+       x = "Age",
+       y = "SATQ Score") +
+  theme_minimal()
 ```
+
+4) Conduct a negligible effect test on the interaction (using a negligible effect interval of b = -2 to b = 2), and summarize the results (3 marks)
+```
+Note that specifying the formula with the following formats will not work in neg.reg: y ~x1*x2 or y ~ x1 + x2 + x1:x2. There are two ways around this: a) compute the interaction term before running the model (e.g., int = x1*x2, using a numeric version of gender), and then use neg.reg (formula = y ~ x1 + x2 + int), or b) compute the confidence interval for the interaction separately using confint(model).
+```
+```{r}
+# Mutate gender back to numeric using imputated data d02
+d03 <- d02 %>%
+  mutate(gender = case_when(
+    gender == "male" ~ 1,
+    gender == "female" ~ 2
+  ))
+str(d03)
+
+# Add an interaction term in the dataset
+d03$interaction <- d03$gender * d03$age
+
+library(negligible)
+neg.reg(formula = SATQ ~ age + gender + interaction, data = d03, predictor = interaction, eil = -2, eiu = 2)
+
+```
+
+The lower bound of the negligible effect is -3.17 and the upper bound of the negligible effect is -0.13. Therefore, the interaction is not equivalent and statistically different.
+
 
 5) Provide an interpretation of the magnitude of the interaction using both standardized and
 unstandardized units, as well as an interpretation of magnitude using the proportional
