@@ -58,8 +58,9 @@ Explore how the interaction between gender and age affects scores on the SATQ. M
 
 1) Set-up the variables/model and print the results (3 marks)
 ```{r}
-# Set up the linear model in the interaction term between gender and age
+# Set up the linear model in the interaction term between gender and age for SATQ score.
 model01 <- lm(SATQ ~ gender * age, data = d02)
+summary(d02)
 confint(model01, level = 0.90)
 summary(model01)
 ```
@@ -73,6 +74,16 @@ The coefficient estimate of age is -0.9927, indicating that for one-year increas
 
 **Interaction Term between Gender and Age**  
 The coefficient of 1.5978 for the interaction term suggests that the impact of age on SATQ scores is different for males compared to females. More specifically, for each additional year, the SATQ score for males is expected to increase by 1.5978 points more than it would for females, holding all other predictors constant.The corresponding p-value 0.0996 is statistically significant when alpha = .10. The confidence interval ranges from 0.04478906   3.15086977, which also suggests that there is an interaction.
+
+**Residual SE**
+SATQ score ranges from 200 - 828.6, and RSE is 114.3 on 696 degrees of freedom, I consider RSE not outrageiously large. Therefore, the model has a reasonable hit.
+
+**Adjusted R^2**
+Adjusted R^2 was 0.02566 suggesting that the only 2.566% of the variance in SATQ is explained by this model, suggesting that there are other variables that may be in play in changing SATQ scores.
+
+**F-statistic**
+F-value of 7.136 on 3 and 696 defgree of freedom draws the p-value of 0.0001. This very small p-value challenges the null hypothesis and suggests that changes in SATQ scores are influenced by age, gender and their interaction.
+
 
 3) Plot the interaction, with a summary of visualization (2 marks)
 ```{r}
@@ -103,11 +114,16 @@ str(d03)
 d03$interaction <- d03$gender * d03$age
 
 library(negligible)
-neg.reg(formula = SATQ ~ age + gender + interaction, data = d03, predictor = interaction, eil = -2, eiu = 2)
+# Unstandardized std - FALSE (Default)
+neg.reg(formula = SATQ ~ age + gender + interaction, test = "TOST", data = d03, predictor = interaction, eil = -2, eiu = 2)
+
+# Standardized
+neg.reg(formula = SATQ ~ age + gender + interaction, test = "TOST", data = d03, predictor = interaction, eil = -2, eiu = 2, std = TRUE)
 
 ```
-
-The lower bound of the negligible effect is -3.17 and the upper bound of the negligible effect is -0.13. Therefore, the interaction is not equivalent and statistically different.
+The interaction term (age * gender) has a negative slope of b = -1.598. This implies that one unit increase in the interaction term 
+b = -1.598, 90% CI [-3.072, -0.058]
+std. error = 0.943
 
 
 5) Provide an interpretation of the magnitude of the interaction using both standardized and
